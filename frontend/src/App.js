@@ -1,7 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
+import CategoryHeader from './components/CategoryHeader';
+import FaqList from '../src/components/FaqList';
+import FaqCreate from './components/FaqCreate';
+import FaqDetails from './components/FaqDetails';
+
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -13,19 +20,17 @@ import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen.js';
 import UserAdsScreen from './screens/UserAdsScreen';
 import ProductsByCategoryScreen from './screens/ProductsByCategoryScreen';
-import CategoryHeader from './components/CategoryHeader';
-import FaqList from '../src/components/FaqList';
-import FaqCreate from './components/FaqCreate';
 import FaqScreen from './screens/FaqScreen';
-import FaqDetails from './components/FaqDetails';
 import UserWishlistScreen from './screens/UserWishlistScreen';
 import MyRentsScreen from './screens/MyRentsScreen';
 import ChatScreen from './screens/ChatScreen';
 import UserAdsScreenPublic from './screens/UserAdsScreenPublic';
 
 const App = () => {
+  const queryClient = new QueryClient();
+
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Header />
       <main>
         <Container>
@@ -107,7 +112,7 @@ const App = () => {
         </Container>
       </main>
       <Footer />
-    </>
+    </QueryClientProvider>
   );
 };
 

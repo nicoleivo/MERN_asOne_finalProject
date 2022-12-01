@@ -122,7 +122,11 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: ['productTopCategoryName', 'productList'],
+  blacklist: [
+    'productTopCategoryName',
+    'productList',
+    'userDetailsProductCreator',
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, appReducer);

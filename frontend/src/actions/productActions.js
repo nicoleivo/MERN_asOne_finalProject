@@ -27,6 +27,7 @@ import {
   PRODUCT_TOP_CATEGORYNAME_REQUEST,
   PRODUCT_TOP_CATEGORYNAME_SUCCESS,
   PRODUCT_TOP_CATEGORYNAME_FAIL,
+  PRODUCT_DETAILS_RESET,
 } from '../constants/productConstants';
 
 export const listProducts =
@@ -81,7 +82,6 @@ export const listProductDetails = (id) => async (dispatch) => {
 export const listProductDetailsByUserId = (userId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_BY_USER_REQUEST });
-
 
     const { data } = await axios.get(`/api/products/user/${userId}`);
 

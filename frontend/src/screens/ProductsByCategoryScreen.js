@@ -18,10 +18,6 @@ const ProductsByCategory = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, page, pages } = productList;
 
-  // console.log("products", products);
-  // console.log("productsCategory", productsCategory);
-  console.log('keyword', keyword);
-
   useEffect(() => {
     dispatch(listProducts(keyword, pageNumber));
     // keyword from search functionality

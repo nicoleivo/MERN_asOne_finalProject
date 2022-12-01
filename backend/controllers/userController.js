@@ -1,44 +1,42 @@
-import asyncHandler from "express-async-handler"
-import generateToken from "../utils/generateToken.js"
-import User from "../models/userModel.js"
-
+import asyncHandler from 'express-async-handler';
+import generateToken from '../utils/generateToken.js';
+import User from '../models/userModel.js';
 
 // @desc Auth user & get token
 // @route POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body
+  const { email, password } = req.body;
 
-    const user = await User.findOne({email: email})
+  const user = await User.findOne({ email: email });
 
   // if user exist and user password match with password in database
   // matchPassword defined in userModel
-    if(user && (await user.matchPassword(password))) {
+  if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-            token: generateToken(user._id)
-        }) 
+      token: generateToken(user._id),
+    });
   } else {
-        res.status(401)
-        throw new Error("Invalid email or password")
+    res.status(401);
+    throw new Error('Invalid email or password');
   }
-})
-
+});
 
 // @desc Register a new user
 // @route POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, city, district } = req.body
+  const { name, email, password, city, district } = req.body;
 
-    const userExists = await User.findOne({email: email})
+  const userExists = await User.findOne({ email: email });
 
-    if(userExists) {
-        res.status(400) // 400 = bad request
-        throw new Error("User already exists")
+  if (userExists) {
+    res.status(400); // 400 = bad request
+    throw new Error('User already exists');
   }
 
   // if user doesn't exist create new User
@@ -48,11 +46,11 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     city,
-        district
-    })
+    district,
+  });
 
   // if user is created successfully give back complete user data json
-    if(user) {
+  if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -60,23 +58,21 @@ const registerUser = asyncHandler(async (req, res) => {
       city: user.city,
       district: user.district,
       isAdmin: user.isAdmin,
-            token: generateToken(user._id)
-        })
+      token: generateToken(user._id),
+    });
   } else {
-        res.status(400)
-        throw new Error("Invalid user data")
+    res.status(400);
+    throw new Error('Invalid user data');
   }
-})
-
+});
 
 // @desc GET user profile
 // @route GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
 
-    const user = await User.findById(req.user._id)
-    
-    if(user) {
+  if (user) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -85,33 +81,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
       city: user.city,
       district: user.district,
       isAdmin: user.isAdmin,
-        })
-        
+    });
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-})
-
+});
 
 // @desc UPDATE user profile
 // @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
 
-    const user = await User.findById(req.user._id)
-
-    if(user) {
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
-        if(req.body.password) {
-            user.password = req.body.password
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
     }
-        user.image = req.body.image || user.image
-        user.city = req.body.city || user.city
-        user.district = req.body.district || user.district
+    user.image = req.body.image || user.image;
+    user.city = req.body.city || user.city;
+    user.district = req.body.district || user.district;
 
-        const updatedUser = await user.save()
+    const updatedUser = await user.save();
 
     res.json({
       _id: updatedUser._id,
@@ -121,75 +114,71 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       city: updatedUser.city,
       district: updatedUser.district,
       isAdmin: updatedUser.isAdmin,
-            token: generateToken(updatedUser._id)
-        }) 
-
+      token: generateToken(updatedUser._id),
+    });
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-})
-
+});
 
 // @desc GET all profile
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
   // get all users
-    const users = await User.find({})
-    res.json(users)
-})
+  const users = await User.find({});
+  res.json(users);
+});
 
 // @desc DELETE user
 // @route DELETE /api/users/:id
 // @access Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id)
+  const user = await User.findById(req.params.id);
 
-    if(user) {
-        await user.remove() // mongoose query
-        res.json({ message: "User removed" })
+  if (user) {
+    await user.remove(); // mongoose query
+    res.json({ message: 'User removed' });
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-
-})
+});
 
 // @desc GET user by id
 // @route GET /api/users/:id
 // @access Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
   //
-    const user = await User.findById(req.params.id).select("-password")
-    if(user) {
-        res.json(user)
+  const user = await User.findById(req.params.id).select('-password');
+  if (user) {
+    res.json(user);
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-})
+});
 
 // @desc UPDATE user
 // @route PUT /api/users/:id
 // @access Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-    
-    const user = await User.findById(req.params.id) // find user from url id
+  const user = await User.findById(req.params.id); // find user from url id
 
-    if(user) {
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
     // password change not wanted
     // if(req.body.password) {
     //     user.password = req.body.password
     // }
-        user.image = req.body.image || user.image
-        user.city = req.body.city || user.city
-        user.district = req.body.district || user.district
-        user.isAdmin = req.body.isAdmin 
+    user.image = req.body.image || user.image;
+    user.city = req.body.city || user.city;
+    user.district = req.body.district || user.district;
+    user.isAdmin = req.body.isAdmin;
 
-        const updatedUser = await user.save()
+    const updatedUser = await user.save();
 
     res.json({
       _id: updatedUser._id,
@@ -198,14 +187,13 @@ const updateUser = asyncHandler(async (req, res) => {
       image: updatedUser.image,
       city: updatedUser.city,
       district: updatedUser.district,
-            isAdmin: updatedUser.isAdmin
-        }) 
-
+      isAdmin: updatedUser.isAdmin,
+    });
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-})
+});
 
 //................................................................
 
@@ -222,12 +210,10 @@ const addMyWishItem = asyncHandler(async (req, res) => {
       (err, user) => {
         res.json(user);
       }
-    )
-      .populate("wishItems");
-   
+    ).populate('wishItems');
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -241,10 +227,10 @@ const getAllMyWishItems = asyncHandler(async (req, res) => {
     //console.log(userId);
     User.findById(userId, (err, user) => {
       res.json(user.wishItems);
-    }).populate("wishItems");
+    }).populate('wishItems');
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -262,45 +248,47 @@ const deleteWishItem = asyncHandler(async (req, res) => {
       (err, user) => {
         res.json(user);
       }
-    ).populate("wishItems");
+    ).populate('wishItems');
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
-
 
 // @desc GET product creator by id
 // @route GET /api/users/product-creator/:userId
 // @access Public
 
 const getProductCreatorUserDetails = asyncHandler(async (req, res) => {
-    const userProductCreator = await User.findById(req.params.id).select("-password")
-    if(userProductCreator) {
-        res.json(userProductCreator)
+  console.log(req.params.id);
+  const userProductCreator = await User.findById(req.params.id).select(
+    '-password'
+  );
+  if (userProductCreator) {
+    res.json(userProductCreator);
   } else {
-        res.status(404)
-        throw new Error("User not found")
+    res.status(404);
+    throw new Error('User not found');
   }
-})
+});
 const deleteRentedItem = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-if (userId) {
-  User.findByIdAndUpdate(
-    userId, {
-      rentedTo : ''
-    },
-    { new: true },
-    (err, user) => {
-      res.json(user);
-    }
-  )
-} else {
-  res.status(404);
-  throw new Error("User not found");
-}
+  if (userId) {
+    User.findByIdAndUpdate(
+      userId,
+      {
+        rentedTo: '',
+      },
+      { new: true },
+      (err, user) => {
+        res.json(user);
+      }
+    );
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
-
 
 export {
   authUser,
@@ -315,5 +303,5 @@ export {
   getAllMyWishItems,
   deleteWishItem,
   getProductCreatorUserDetails,
-  deleteRentedItem
+  deleteRentedItem,
 };

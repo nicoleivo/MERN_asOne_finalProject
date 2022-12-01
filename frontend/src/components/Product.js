@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { Card } from 'react-bootstrap';
 import { listProductDetails } from '../actions/productActions';
+import { getUserDetailsProductCreator } from '../actions/userActions';
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(product);
 
   const goToProductHandler = () => {
     dispatch(listProductDetails(product._id));
+    // dispatch(getUserDetailsProductCreator(product.user));
     // setTimeout(() => {
     navigate(`/product/${product._id}`);
     // }, 50);

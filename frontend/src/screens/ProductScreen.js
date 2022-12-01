@@ -72,7 +72,7 @@ const ProductScreen = () => {
       setComment('');
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-    // dispatch(listProductDetails(params.id));
+    dispatch(listProductDetails(params.id));
   }, [dispatch, params, successProductReview, productDescription]);
 
   useEffect(() => {
