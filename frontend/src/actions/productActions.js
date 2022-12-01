@@ -27,7 +27,6 @@ import {
   PRODUCT_TOP_CATEGORYNAME_REQUEST,
   PRODUCT_TOP_CATEGORYNAME_SUCCESS,
   PRODUCT_TOP_CATEGORYNAME_FAIL,
-  PRODUCT_DETAILS_RESET,
 } from '../constants/productConstants';
 
 export const listProducts =

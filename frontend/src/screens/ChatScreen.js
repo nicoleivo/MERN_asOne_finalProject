@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Container } from 'react-bootstrap';
@@ -7,11 +7,7 @@ import { io } from 'socket.io-client';
 import ChatBody from '../components/chatComponents/ChatBody';
 import RecentChatList from '../components/chatComponents/RecentChatList';
 
-import {
-  getRecentChats,
-  currentChatAction,
-  fetchCurrentMessages,
-} from '../actions/chatActions';
+import { getRecentChats, fetchCurrentMessages } from '../actions/chatActions';
 
 // import { addUnseenMsg } from '../actions/notificationActions';
 

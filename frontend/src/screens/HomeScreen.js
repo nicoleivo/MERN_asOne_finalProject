@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Col, Row, Card, Image } from 'react-bootstrap';
 
 import { listProducts } from '../actions/productActions';
@@ -14,9 +14,6 @@ const HomeScreen = () => {
   const params = useParams();
   const keyword = params.keyword;
   const pageNumber = params.pageNumber || 1;
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
   const dispatch = useDispatch();
 

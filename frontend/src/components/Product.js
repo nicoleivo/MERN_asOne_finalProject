@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { Card } from 'react-bootstrap';
 import { listProductDetails } from '../actions/productActions';
-import { getUserDetailsProductCreator } from '../actions/userActions';
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();

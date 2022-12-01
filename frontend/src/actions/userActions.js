@@ -30,7 +30,6 @@ import {
   USER_DETAILS_PRODUCT_CREATOR_REQUEST,
   USER_DETAILS_PRODUCT_CREATOR_SUCCESS,
   USER_DETAILS_PRODUCT_CREATOR_FAIL,
-  USER_DETAILS_PRODUCT_CREATOR_RESET,
   //wishList
   USER_ADD_WISHITEM_REQUEST,
   USER_ADD_WISHITEM_SUCCESS,
@@ -45,7 +44,6 @@ import {
   USER_DELETE_RENTED_SUCCESS,
   USER_DELETE_RENTED_FAIL,
 } from '../constants/userConstants';
-
 
 export const login = (email, password) => async (dispatch) => {
   try {
