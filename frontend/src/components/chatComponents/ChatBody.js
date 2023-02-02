@@ -45,7 +45,6 @@ const ChatBody = ({ socket }) => {
   console.log(currentChat.isRequired);
 
   const [renterInfoState, setRenterInfo] = useState({});
-  // const [isTyping, setIsTyping] = useState();
 
   const dispatch = useDispatch();
 
@@ -55,20 +54,13 @@ const ChatBody = ({ socket }) => {
   //ref to render approval button
   const renterInfoRef = useRef();
 
-  // useEffect(() => {
-  //   dispatch(fetchCurrentMessages(currentChat._id, socket));
-  // }, [currentChat]);
-
   useEffect(() => {
     socket.on('message received', (receivedMessage) => {
-      console.log('message received');
       let chatId = currentChat._id || receivedMessage.chat._id;
       dispatch(updateMessages(chatId));
       dispatch(getRecentChats());
     });
-    // socket.on('typingResponse', (data) => {
-    //   setIsTyping(data.text);
-    // });
+
     socket.on('confirmation required', (renterInfo) => {
       renterInfoRef.current = renterInfo;
       setRenterInfo(renterInfo);
@@ -127,24 +119,12 @@ const ChatBody = ({ socket }) => {
     setText('');
   };
 
-  // const handleTyping = () => {
-  //   socket.emit('typing', {
-  //     text: `${userInfo.name} is typing...`,
-  //     room: currentChat,
-  //   });
-  // };
-
   return (
     <>
       {currentChat ? (
         <>
           <Container fluid>
             <ProductDetails socket={socket} />
-            {/* <Row md={3} className='chatBody-userDetails'>
-              <Col>
-                
-              </Col>
-            </Row> */}
             <Row sm={6} className='message-container'>
               {messages &&
                 messages.map((message, index) => (
@@ -178,7 +158,7 @@ const ChatBody = ({ socket }) => {
                     )}
                   </Row>
                 ))}
-              {/* <div>{isTyping}</div> */}
+
               {(confirmRequired || currentChat.isRequired) &&
               currentProduct.user !== userInfo._id ? (
                 <Row className='message-row'>
@@ -212,7 +192,6 @@ const ChatBody = ({ socket }) => {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyPress={(e) => handleOnEnter(e)}
-                // onKeyDown={(e) => handleTyping(e.target.value)}
                 disabled={currentChat === null}
               />
               <Button id='basic-addon2' onClick={handleOnClick}>
