@@ -43,7 +43,6 @@ const getFaqById = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Question not found");
   }
-
 });
 
 // @desc DELETE a faq
@@ -67,8 +66,8 @@ const deleteFaq = asyncHandler(async (req, res) => {
 const createFaq = asyncHandler(async (req, res) => {
   const faq = new Faq({
     _id: req.body.id,
-    title: "Sample title",
-    description: "Sample description",
+    title: "Title",
+    description: "Write a description",
   });
   if (faq) {
     const createdFaq = await faq.save();
@@ -129,7 +128,7 @@ const createFaqAnswer = asyncHandler(async (req, res) => {
 // @access Private/admin
 const deleteFaqAnswer = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  
+
   Faq.updateOne(
     {
       answers: { $elemMatch: { _id: mongoose.Types.ObjectId(id) } },
@@ -141,18 +140,16 @@ const deleteFaqAnswer = asyncHandler(async (req, res) => {
       if (result.modifiedCount > 0) {
         // success
         res.json({ message: "Answer removed" });
-      } else { 
+      } else {
         // answer not found
         res.json({ message: "Answer not found" });
       }
-      
     })
     .catch((error) => {
       console.log(error);
       res.status(404);
       throw new Error("Answer not found");
     });
-
 });
 
 export {

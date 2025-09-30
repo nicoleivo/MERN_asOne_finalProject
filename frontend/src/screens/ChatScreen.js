@@ -11,8 +11,10 @@ import { getRecentChats, fetchCurrentMessages } from "../actions/chatActions";
 
 // import { addUnseenMsg } from '../actions/notificationActions';
 
-const SERVER = process.env.REACT_APP_SOCKET_URL || "http://localhost:5001";
-const socket = io(SERVER);
+const SERVER = process.env.REACT_APP_SOCKET_URL;
+const socket = io(SERVER, {
+  transports: ["websocket", "polling"],
+});
 
 const ChatScreen = () => {
   const navigate = useNavigate();

@@ -100,12 +100,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     user: req.user._id,
-    name: "Sample name",
-    image: "/images/sample.jpg",
-    imageSecond: "/images/sample.jpg",
-    imageThird: "/images/sample.jpg",
-    category: "Sample category",
-    description: "Sample description",
+    name: "Full name",
+    image: "",
+    imageSecond: "",
+    imageThird: "",
+    category: "",
+    description: "Write a description",
     numReviews: 0,
     availability: true,
     timesRented: 0,

@@ -119,19 +119,23 @@ const ProfileScreen = () => {
           <Image src={image} rounded />
 
           <Form.Group controlId="image">
-            <Form.Label>Avatar</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter avatar image url"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-            ></Form.Control>
-            <Form.Control
-              type="file"
-              label="Choose Avatar"
-              custom
-              onChange={uploadFileHandler}
-            ></Form.Control>
+            <Form.Label>Profile Picture</Form.Label>
+
+            {/* Show current profile picture */}
+            {image && (
+              <div className="mb-2">
+                <strong>Current:</strong>
+                <Image
+                  src={image}
+                  rounded
+                  className="d-block mt-1"
+                  style={{ maxWidth: "150px" }}
+                />
+              </div>
+            )}
+
+            {/* File upload for changing picture */}
+            <Form.Control type="file" onChange={uploadFileHandler} />
             {uploading && <Loader />}
           </Form.Group>
 
