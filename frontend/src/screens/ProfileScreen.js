@@ -121,19 +121,6 @@ const ProfileScreen = () => {
           <Form.Group controlId="image">
             <Form.Label>Profile Picture</Form.Label>
 
-            {/* Show current profile picture */}
-            {image && (
-              <div className="mb-2">
-                <strong>Current:</strong>
-                <Image
-                  src={image}
-                  rounded
-                  className="d-block mt-1"
-                  style={{ maxWidth: "150px" }}
-                />
-              </div>
-            )}
-
             {/* File upload for changing picture */}
             <Form.Control type="file" onChange={uploadFileHandler} />
             {uploading && <Loader />}
