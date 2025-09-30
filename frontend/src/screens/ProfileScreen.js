@@ -52,7 +52,7 @@ const ProfileScreen = () => {
         // prefill user data on profile page
         setName(user.name);
         setEmail(user.email);
-        setImage(user.image);
+        setImage(`${process.env.REACT_APP_API_URL}${user.image}`);
         setCity(user.city);
         setDistrict(user.district);
       }
