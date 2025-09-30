@@ -90,6 +90,27 @@ const ProfileScreen = () => {
     }
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+    } else {
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name,
+          email,
+          image,
+          city,
+          district,
+          password,
+        })
+      );
+      alert("Profile Updated");
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <FormContainer>
       <h1>Your Profile</h1>
