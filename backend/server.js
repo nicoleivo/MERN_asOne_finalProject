@@ -67,7 +67,7 @@ app.use("/api/message", messageRoutes);
 app.use("/api/faqs", faqRoutes);
 app.use("/api/search", mostSearchRoutes);
 
-// make image upload folder static
+// makes image upload folder static
 // __dirname >> point to current directory
 // __dirname is not directly available with ES MODULES (import syntax), only available with common js require syntax >> add path.resolve()
 const __dirname = path.resolve();

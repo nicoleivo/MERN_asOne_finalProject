@@ -67,7 +67,11 @@ const UserDetails = ({ user }) => {
         {userInfo ? (
           <Row>
             <Col md={4}>
-              <Image style={{ borderRadius: "50%" }} src={user.image} fluid />
+              <Image
+                style={{ borderRadius: "50%" }}
+                src={`${process.env.REACT_APP_API_URL}${user.image}`}
+                fluid
+              />
             </Col>
             <Col md={8} className="d-block" style={{ margin: "auto 0" }}>
               <Link
@@ -96,7 +100,11 @@ const UserDetails = ({ user }) => {
         ) : (
           <Row>
             <Col md={4}>
-              <Image style={{ borderRadius: "50%" }} src={user.image} fluid />
+              <Image
+                style={{ borderRadius: "50%" }}
+                src={`${process.env.REACT_APP_API_URL}${user.image}`}
+                fluid
+              />
             </Col>
             <Col md={8} className="d-block" style={{ margin: "auto 0" }}>
               <div style={{ fontWeight: "bold" }}>{user.name}</div>

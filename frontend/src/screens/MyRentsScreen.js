@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Row, Container, Button, Card } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import { getUserDetails } from '../actions/userActions';
-import '../components/components_css/myAddScreen.css';
-import { Link } from 'react-router-dom';
-import { listProducts } from '../actions/productActions';
-import { LinkContainer } from 'react-router-bootstrap';
-import { deleteRentedItem } from '../actions/userActions';
+import React, { useEffect, useState } from "react";
+import { Col, Row, Container, Button, Card } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import { getUserDetails } from "../actions/userActions";
+import "../components/components_css/myAddScreen.css";
+import { Link } from "react-router-dom";
+import { listProducts } from "../actions/productActions";
+import { LinkContainer } from "react-router-bootstrap";
+import { deleteRentedItem } from "../actions/userActions";
 
 export default function UserRentedScreen() {
   const [rentedProducts, setRentedProducts] = useState();
@@ -62,7 +62,7 @@ export default function UserRentedScreen() {
   }, [dispatch, user, userInfo]);
 
   const deleteHandler = (productId) => {
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm("Are you sure?")) {
       dispatch(deleteRentedItem(productId));
     }
   };
@@ -70,39 +70,39 @@ export default function UserRentedScreen() {
   return (
     <>
       {userLoading && productLoading && loading && <Loader />}
-      {userError && <Message variant='danger'>{userError}</Message>}
+      {userError && <Message variant="danger">{userError}</Message>}
       {productLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Container>
-          <Row className=' flex-md-row  ' md={2}>
+          <Row className=" flex-md-row  " md={2}>
             <Col>{/* <UserDetails /> */}</Col>
           </Row>
 
-          <Row className=' flex-md-row  '>
+          <Row className=" flex-md-row  ">
             {rentedProducts?.map((product) => (
               <>
                 {user._id === product.user && user._id === userInfo._id && (
                   <Card
-                    className='my-2 p-3 rounded '
+                    className="my-2 p-3 rounded "
                     key={product._id}
-                    border='light'
+                    border="light"
                   >
                     <Row>
                       <Col sm={12} lg={3}>
-                        {' '}
+                        {" "}
                         <Link to={`/product/${product._id}`}>
                           <Card>
                             <Card.Img
-                              src={product.image}
-                              variant='top'
-                              className='productImage opacity-25 userAddImage'
+                              src={`${process.env.REACT_APP_API_URL}${product.image}`}
+                              variant="top"
+                              className="productImage opacity-25 userAddImage"
                             />
                             <Card.ImgOverlay>
-                              <div className=' bg-dark mt-5 p-1 text-center text-danger'>
-                                <h6 className='fa-solid fa-rotate'>Rented</h6>
+                              <div className=" bg-dark mt-5 p-1 text-center text-danger">
+                                <h6 className="fa-solid fa-rotate">Rented</h6>
                               </div>
                             </Card.ImgOverlay>
                           </Card>
@@ -110,21 +110,21 @@ export default function UserRentedScreen() {
                       </Col>
                       <Col sm={12} lg={7}>
                         <Card.Body>
-                          <Card.Text as='h6'>{product.category}</Card.Text>
+                          <Card.Text as="h6">{product.category}</Card.Text>
 
                           <Link
                             to={`/product/${product._id}`}
-                            className='text-decoration-none'
+                            className="text-decoration-none"
                           >
-                            <Card.Title as='h5' className=' mb-3'>
+                            <Card.Title as="h5" className=" mb-3">
                               {product.name}
                             </Card.Title>
                           </Link>
 
-                          <Card.Text as='h6' className='productText'>
+                          <Card.Text as="h6" className="productText">
                             {/* Created on: {product.createdAt.substring(0, 10)} */}
                           </Card.Text>
-                          <Card.Text as='h6'>
+                          <Card.Text as="h6">
                             ({product.timesRented})Times rented
                           </Card.Text>
                         </Card.Body>
@@ -133,19 +133,19 @@ export default function UserRentedScreen() {
                         <Row>
                           <LinkContainer to={`/products/${product._id}/edit`}>
                             <Button
-                              variant='dark'
-                              className='btn-sm mb-1 btn-custom-cta'
+                              variant="dark"
+                              className="btn-sm mb-1 btn-custom-cta"
                             >
-                              <i className='fas fa-comment'></i> Chat
+                              <i className="fas fa-comment"></i> Chat
                             </Button>
                           </LinkContainer>
 
                           <Button
-                            variant='dark'
-                            className='btn-sm mb-1 btn-custom-cta'
+                            variant="dark"
+                            className="btn-sm mb-1 btn-custom-cta"
                             onClick={() => deleteHandler(product._id)}
                           >
-                            <i className='fas fa-rotate-left'></i> Is Returned
+                            <i className="fas fa-rotate-left"></i> Is Returned
                           </Button>
                         </Row>
                       </Col>

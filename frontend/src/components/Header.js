@@ -142,7 +142,7 @@ const Header = () => {
                       user?.image ? (
                         <Image
                           className="userThumbnail"
-                          src={user.image}
+                          src={`${process.env.REACT_APP_API_URL}${user.image}`}
                           fluid
                         />
                       ) : (

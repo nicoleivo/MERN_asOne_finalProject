@@ -106,14 +106,14 @@ const UserWishlistScreen = () => {
                   <Card border="light" key={product._id}>
                     {product.availability ? (
                       <Card.Img
-                        src={product.image}
+                        src={`${process.env.REACT_APP_API_URL}${product.image}`}
                         variant="top"
                         className="card-img-custom"
                       />
                     ) : (
                       <>
                         <Card.Img
-                          src={product.image}
+                          src={`${process.env.REACT_APP_API_URL}${product.image}`}
                           variant="top"
                           className="card-img-custom opacity-25"
                         />

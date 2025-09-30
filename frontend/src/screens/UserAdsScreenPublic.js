@@ -70,14 +70,14 @@ export default function UserAdsScreenPublic() {
                       <Link to={`/product/${product._id}`}>
                         {product.availability ? (
                           <Card.Img
-                            src={product.image}
+                            src={`${process.env.REACT_APP_API_URL}${product.image}`}
                             variant="top"
                             className="productImage userAddImage"
                           />
                         ) : (
                           <Card>
                             <Card.Img
-                              src={product.image}
+                              src={`${process.env.REACT_APP_API_URL}${product.image}`}
                               variant="top"
                               className="productImage opacity-25 userAddImage"
                             />

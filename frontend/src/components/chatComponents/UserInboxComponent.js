@@ -1,11 +1,11 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Image, Button } from 'react-bootstrap';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, Image, Button } from "react-bootstrap";
 
 import {
   fetchCurrentMessages,
   currentChatAction,
-} from '../../actions/chatActions';
+} from "../../actions/chatActions";
 
 const UserInboxComponent = ({ selectedUser, socket, ...chat }) => {
   const dispatch = useDispatch();
@@ -29,50 +29,53 @@ const UserInboxComponent = ({ selectedUser, socket, ...chat }) => {
         key={selectedUser._id}
         className={
           currentChat === chat._id
-            ? 'd-grip userChat-row selectedChat'
-            : 'd-grip userChat-row'
+            ? "d-grip userChat-row selectedChat"
+            : "d-grip userChat-row"
         }
       >
         <Button
           key={selectedUser._id}
-          variant='rounded'
-          size='lg'
+          variant="rounded"
+          size="lg"
           onClick={handleSelectChat}
-          className='userChat-button'
+          className="userChat-button"
         >
-          <Col md={2} className='userChat-col1'>
-            <Image src={selectedUser?.image} className='userChat-avatar' />
+          <Col md={2} className="userChat-col1">
+            <Image
+              src={`${process.env.REACT_APP_API_URL}${selectedUser?.image}`}
+              className="userChat-avatar"
+            />
             {/* {required && (
               <i className='fa-solid fa-circle-exclamation'></i>
             )} */}
           </Col>
-          <Col md={10} className='userChat-col2'>
-            <Row style={{ width: '100%' }}>
-              <p className='userChat-userName'>{selectedUser.name}</p>
+          <Col md={10} className="userChat-col2">
+            <Row style={{ width: "100%" }}>
+              <p className="userChat-userName">{selectedUser.name}</p>
             </Row>
-            <Row style={{ width: '100%' }}>
+            <Row style={{ width: "100%" }}>
               {chat.latestMessage && (
-                <p className='userChat-latestMessage'>
+                <p className="userChat-latestMessage">
                   {chat.latestMessage.content}
                 </p>
               )}
             </Row>
             {chat.product && (
-              <Row style={{ width: '100%', paddingLeft: '.5rem' }}>
-                <Col md={2} className='userChat-col1'>
+              <Row style={{ width: "100%", paddingLeft: ".5rem" }}>
+                <Col md={2} className="userChat-col1">
                   <Image
-                    className='userChat-productImage'
-                    src={chat.product.image}
+                    className="userChat-productImage"
+                    src={`${process.env.REACT_APP_API_URL}${chat.product.image}`}
                   />
                 </Col>
-                <Col className='userChat-productData'>
+                <Col className="userChat-productData">
                   <Row>
-                    <p className='userChat-product productName'>
+                    <p className="userChat-product productName">
                       {chat.product.name}
                     </p>
                   </Row>
                   <Row>
-                    <p className='userChat-product'>{chat.product.category}</p>
+                    <p className="userChat-product">{`${process.env.REACT_APP_API_URL}${chat.product.category}`}</p>
                   </Row>
                 </Col>
               </Row>

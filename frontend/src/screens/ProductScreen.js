@@ -137,7 +137,7 @@ const ProductScreen = () => {
                   <Carousel.Item>
                     <img
                       className="d-block w-75"
-                      src={product.image}
+                      src={`${process.env.REACT_APP_API_URL}${product.image}`}
                       alt="First slide"
                     />
                   </Carousel.Item>
@@ -147,7 +147,7 @@ const ProductScreen = () => {
                   <Carousel.Item>
                     <img
                       className="d-block w-75"
-                      src={product.image}
+                      src={`${process.env.REACT_APP_API_URL}${product.image}`}
                       alt="First slide"
                     />
                   </Carousel.Item>
@@ -155,7 +155,7 @@ const ProductScreen = () => {
                     <Carousel.Item>
                       <img
                         className="d-block w-75"
-                        src={product.imageSecond}
+                        src={`${process.env.REACT_APP_API_URL}${product.imageSecond}`}
                         alt="Second slide"
                       />
                     </Carousel.Item>
@@ -164,7 +164,7 @@ const ProductScreen = () => {
                     <Carousel.Item>
                       <img
                         className="d-block w-75"
-                        src={product.imageThird}
+                        src={`${process.env.REACT_APP_API_URL}${product.imageThird}`}
                         alt="Third slide"
                       />
                     </Carousel.Item>

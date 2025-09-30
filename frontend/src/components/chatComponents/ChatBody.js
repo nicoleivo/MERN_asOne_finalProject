@@ -132,7 +132,7 @@ const ChatBody = ({ socket }) => {
                     {message.sender._id !== userInfo._id && (
                       <div className="left-container" key={index}>
                         <Image
-                          src={message.sender.image}
+                          src={`${process.env.REACT_APP_API_URL}${message.sender.image}`}
                           className="message-avatar"
                         />
                         <Card
