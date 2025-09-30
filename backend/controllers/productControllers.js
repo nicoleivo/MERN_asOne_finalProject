@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler';
-import Product from '../models/productModel.js';
+import asyncHandler from "express-async-handler";
+import Product from "../models/productModel.js";
 
 // @desc Fetch all products
 // @route GET /api/products
@@ -8,10 +8,10 @@ const getProducts = asyncHandler(async (req, res) => {
   let { keyword } = req.query;
 
   // Create expression
-  var re = new RegExp(keyword, 'i');
+  var re = new RegExp(keyword, "i");
   let find = {};
 
-  if (keyword != undefined && keyword != '') {
+  if (keyword != undefined && keyword != "") {
     //This all are the fields that will used as match
     find = {
       $or: [{ name: { $regex: re } }, { category: { $regex: re } }],
@@ -31,7 +31,7 @@ const getProducts = asyncHandler(async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * (page - 1))
     .sort({ createdAt: -1 })
-    .populate('user'); //sort products by created time
+    .populate("user"); //sort products by created time
 
   //get all products without filter
   const allProductsCategory = await Product.find({});
@@ -61,7 +61,7 @@ const getProductById = asyncHandler(async (req, res) => {
     res.json(product);
   } else {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Product not found");
   }
 });
 
@@ -75,7 +75,7 @@ const getProductByUserId = asyncHandler(async (req, res) => {
     res.json(products);
   } else {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Product not found");
   }
 });
 
@@ -87,10 +87,10 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
   if (product) {
     await product.remove(); // mongoose query
-    res.json({ message: 'Product removed' });
+    res.json({ message: "Product removed" });
   } else {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Product not found");
   }
 });
 
@@ -100,12 +100,12 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     user: req.user._id,
-    name: 'Sample name',
-    image: '/images/sample.jpg',
-    imageSecond: '/images/sample.jpg',
-    imageThird: '/images/sample.jpg',
-    category: 'Sample category',
-    description: 'Sample description',
+    name: "Sample name",
+    image: "/images/sample.jpg",
+    imageSecond: "/images/sample.jpg",
+    imageThird: "/images/sample.jpg",
+    category: "Sample category",
+    description: "Sample description",
     numReviews: 0,
     availability: true,
     timesRented: 0,
@@ -147,7 +147,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     res.status(201).json(updatedProduct);
   } else {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Product not found");
   }
 });
 
@@ -167,7 +167,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 
     if (alreadyReviewed) {
       res.status(400);
-      throw new Error('Product already reviewed');
+      throw new Error("Product already reviewed");
     }
 
     // if not already reviewed
@@ -189,10 +189,10 @@ const createProductReview = asyncHandler(async (req, res) => {
       product.reviews.length;
 
     await product.save();
-    res.status(201).json({ message: 'Review added' });
+    res.status(201).json({ message: "Review added" });
   } else {
     res.status(404);
-    throw new Error('Product not found');
+    throw new Error("Product not found");
   }
 });
 
@@ -204,30 +204,44 @@ const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({})
     .sort({ rating: -1 })
     .limit(4)
-    .populate('user');
+    .populate("user");
 
   res.json(products);
 });
 
 const getTopCategoryName = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  try {
+    const products = await Product.find({});
 
-  if (products) {
-    const topCategory = await Product.aggregate([
-      { $match: {} },
-      { $group: { _id: '$category', rating: { $sum: '$rating' } } },
-    ])
-      .sort({ rating: -1 })
-      .limit(1);
-    if (topCategory) {
-      const topCategoryProduct = await Product.find({
-        category: topCategory[0]._id,
-      })
+    if (products && products.length > 0) {
+      const topCategory = await Product.aggregate([
+        { $match: {} },
+        { $group: { _id: "$category", rating: { $sum: "$rating" } } },
+      ])
         .sort({ rating: -1 })
-        .limit(4)
-        .populate("user")
-      res.json(topCategoryProduct);
+        .limit(1);
+      if (topCategory && topCategory.length > 0 && topCategory[0]._id) {
+        const topCategoryProduct = await Product.find({
+          category: topCategory[0]._id,
+        })
+          .sort({ rating: -1 })
+          .limit(4)
+          .populate("user");
+        res.json(topCategoryProduct);
+      } else {
+        // Return empty array if no top category found
+        res.json([]);
+      }
+    } else {
+      // Return empty array if no products at all
+      res.json([]);
     }
+  } catch (error) {
+    console.error("Error in getTopCategoryName:", error);
+    res.status(500).json({
+      message: "Error fetching top category",
+      error: error.message,
+    });
   }
 });
 
