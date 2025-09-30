@@ -61,45 +61,32 @@ const ProfileScreen = () => {
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-    setUploading(true); // loading
+    setUploading(true);
 
     try {
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "asone_uploads"); // Your preset name
 
-      const { data } = await api.post("/api/upload", formData, config);
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dcgob4tzf/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      setImage(data);
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = await response.json();
+      setImage(data.secure_url); // This is the Cloudinary URL
       setUploading(false);
     } catch (error) {
-      console.error(error);
+      console.error("Upload error:", error);
       setUploading(false);
-    }
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-    } else {
-      dispatch(
-        updateUserProfile({
-          id: user._id,
-          name,
-          email,
-          image,
-          city,
-          district,
-          password,
-        })
-      );
-      alert("Profile Updated");
-      window.scrollTo(0, 0);
+      alert("Image upload failed. Please try again.");
     }
   };
 
@@ -117,54 +104,52 @@ const ProfileScreen = () => {
       ) : (
         <Form onSubmit={submitHandler}>
           <Form.Group controlId="image">
-            <Form.Label>Profile Picture</Form.Label>
-
-            {/* Current profile picture preview with delete button */}
+            {/* Image preview section (comes first) */}
             {image && (
-              <div className="position-relative d-inline-block">
-                <Image
-                  src={`${process.env.REACT_APP_API_URL}${image}`}
-                  rounded
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                    objectFit: "cover",
-                  }}
-                />
-                {/* Delete button - small grey circle with cross */}
-                <Button
-                  variant="light"
-                  size="sm"
-                  onClick={() => setImage("")}
-                  className="position-absolute rounded-circle"
-                  style={{
-                    bottom: "8px",
-                    right: "8px",
-                    width: "28px",
-                    height: "28px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 0,
-                    border: "1px solid #dee2e6",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                  }}
-                  title="Remove profile picture"
-                >
-                  <i
-                    className="fas fa-times"
-                    style={{ fontSize: "12px", color: "#6c757d" }}
-                  ></i>
-                </Button>
+              <div className="mb-2">
+                <div className="position-relative d-inline-block">
+                  <Image
+                    src={`${process.env.REACT_APP_API_URL}${image}`}
+                    rounded
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <button
+                    onClick={() => setImage("")}
+                    className="position-absolute rounded-circle border-0"
+                    style={{
+                      bottom: "8px",
+                      right: "8px",
+                      width: "28px",
+                      height: "28px",
+                      backgroundColor: "rgba(255, 255, 255, 0.95)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      color: "#6c757d",
+                      cursor: "pointer",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                    }}
+                    title="Remove profile picture"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* File upload for changing picture */}
-            <Form.Control
-              type="file"
-              onChange={uploadFileHandler}
-              className="mt-3"
-            />
+            {/* Label section (comes after image) */}
+            <div className="mb-2">
+              <Form.Label>Profile Picture</Form.Label>
+            </div>
+
+            {/* File input section (comes after label) */}
+            <Form.Control type="file" onChange={uploadFileHandler} />
             {uploading && <Loader />}
           </Form.Group>
 
