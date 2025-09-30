@@ -52,7 +52,7 @@ const ProfileScreen = () => {
         // prefill user data on profile page
         setName(user.name);
         setEmail(user.email);
-        setImage(`${process.env.REACT_APP_API_URL}${user.image}`);
+        setImage(user.image);
         setCity(user.city);
         setDistrict(user.district);
       }
@@ -116,13 +116,55 @@ const ProfileScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Form onSubmit={submitHandler}>
-          <Image src={image} rounded />
-
           <Form.Group controlId="image">
             <Form.Label>Profile Picture</Form.Label>
 
+            {/* Current profile picture preview with delete button */}
+            {image && (
+              <div className="position-relative d-inline-block">
+                <Image
+                  src={`${process.env.REACT_APP_API_URL}${image}`}
+                  rounded
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    objectFit: "cover",
+                  }}
+                />
+                {/* Delete button - small grey circle with cross */}
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={() => setImage("")}
+                  className="position-absolute rounded-circle"
+                  style={{
+                    bottom: "8px",
+                    right: "8px",
+                    width: "28px",
+                    height: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 0,
+                    border: "1px solid #dee2e6",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  }}
+                  title="Remove profile picture"
+                >
+                  <i
+                    className="fas fa-times"
+                    style={{ fontSize: "12px", color: "#6c757d" }}
+                  ></i>
+                </Button>
+              </div>
+            )}
+
             {/* File upload for changing picture */}
-            <Form.Control type="file" onChange={uploadFileHandler} />
+            <Form.Control
+              type="file"
+              onChange={uploadFileHandler}
+              className="mt-3"
+            />
             {uploading && <Loader />}
           </Form.Group>
 
