@@ -1,16 +1,15 @@
 import React from "react";
-import {Card, Col, Row } from "react-bootstrap";
-
+import { Card, Col, Row } from "react-bootstrap";
 
 export default function MainAdd() {
   return (
     <>
       <Card bg="dark" border="light">
         <Row className="flex-column-reverse flex-md-row  align-items-center mainAddCard">
-          <Col  className="mainAddCol">
+          <Col className="mainAddCol">
             <Card.Img
               variant="bottom"
-              src="../../../uploads/hero-banner.png"
+              src="/hero-banner.png"
               className="add_image"
             />
             {/* <Card.ImgOverlay>
@@ -26,12 +25,8 @@ export default function MainAdd() {
               </ListGroup>
             </Card.ImgOverlay> */}
           </Col>
- 
         </Row>
       </Card>
     </>
   );
 }
-
-
-   

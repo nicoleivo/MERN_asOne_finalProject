@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
   Row,
@@ -8,19 +8,19 @@ import {
   Image,
   Button,
   Card,
-} from 'react-bootstrap';
+} from "react-bootstrap";
 
 import {
   sendMessage,
   updateMessages,
   updateChat,
   getRecentChats,
-} from '../../actions/chatActions';
-import { updateProduct } from '../../actions/productActions';
+} from "../../actions/chatActions";
+import { updateProduct } from "../../actions/productActions";
 
-import '../components_css/chat.css';
+import "../components_css/chat.css";
 
-import ProductDetails from './ProductDetails';
+import ProductDetails from "./ProductDetails";
 
 const ChatBody = ({ socket }) => {
   //Logged user
@@ -35,7 +35,7 @@ const ChatBody = ({ socket }) => {
   const { messages } = useSelector((state) => state.chat);
 
   //State for input
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   //State to render approval message
   const [confirmRequired, setConfirmRequired] = useState(
@@ -55,13 +55,13 @@ const ChatBody = ({ socket }) => {
   const renterInfoRef = useRef();
 
   useEffect(() => {
-    socket.on('message received', (receivedMessage) => {
+    socket.on("message received", (receivedMessage) => {
       let chatId = currentChat._id || receivedMessage.chat._id;
       dispatch(updateMessages(chatId));
       dispatch(getRecentChats());
     });
 
-    socket.on('confirmation required', (renterInfo) => {
+    socket.on("confirmation required", (renterInfo) => {
       renterInfoRef.current = renterInfo;
       setRenterInfo(renterInfo);
       setConfirmRequired(true);
@@ -71,15 +71,15 @@ const ChatBody = ({ socket }) => {
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
     lastMessageRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
     });
   }, [currentChat, messages]);
 
   //Submit approval handler
   const handleApproval = () => {
-    socket.emit('confirmation approved', currentProduct.user);
+    socket.emit("confirmation approved", currentProduct.user);
     dispatch(
       updateProduct({
         _id: currentProduct._id,
@@ -108,15 +108,15 @@ const ChatBody = ({ socket }) => {
 
   //Submit message handlers
   const handleOnEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       dispatch(sendMessage(text, socket, currentChat._id));
-      setText('');
+      setText("");
     }
   };
 
   const handleOnClick = () => {
     dispatch(sendMessage(text, socket, currentChat._id));
-    setText('');
+    setText("");
   };
 
   return (
@@ -125,21 +125,21 @@ const ChatBody = ({ socket }) => {
         <>
           <Container fluid>
             <ProductDetails socket={socket} />
-            <Row sm={6} className='message-container'>
+            <Row sm={6} className="message-container">
               {messages &&
-                messages.map((message, index) => (
-                  <Row className='message-row' key={index}>
+                (messages || []).map((message, index) => (
+                  <Row className="message-row" key={index}>
                     {message.sender._id !== userInfo._id && (
-                      <div className='left-container' key={index}>
+                      <div className="left-container" key={index}>
                         <Image
                           src={message.sender.image}
-                          className='message-avatar'
+                          className="message-avatar"
                         />
                         <Card
                           body
                           key={index}
-                          style={{ width: '18rem' }}
-                          className='message-left'
+                          style={{ width: "18rem" }}
+                          className="message-left"
                         >
                           {message.content}
                         </Card>
@@ -150,8 +150,8 @@ const ChatBody = ({ socket }) => {
                       <Card
                         body
                         key={index}
-                        style={{ width: '18rem' }}
-                        className='message-right'
+                        style={{ width: "18rem" }}
+                        className="message-right"
                       >
                         {message.content}
                       </Card>
@@ -161,20 +161,20 @@ const ChatBody = ({ socket }) => {
 
               {(confirmRequired || currentChat.isRequired) &&
               currentProduct.user !== userInfo._id ? (
-                <Row className='message-row'>
-                  <Card.Body className='rent-approval'>
-                    <p style={{ textAlign: 'center' }}>
+                <Row className="message-row">
+                  <Card.Body className="rent-approval">
+                    <p style={{ textAlign: "center" }}>
                       {currentUser.name} marked product as rented. Please
                       approve as soon as you picked it up.
                     </p>
                     <Button
                       onClick={handleApproval}
-                      style={{ borderRadius: '5px', width: '70%' }}
+                      style={{ borderRadius: "5px", width: "70%" }}
                     >
                       Approve
                       <i
-                        className='fa-solid fa-check'
-                        style={{ marginLeft: '.5rem' }}
+                        className="fa-solid fa-check"
+                        style={{ marginLeft: ".5rem" }}
                       ></i>
                     </Button>
                   </Card.Body>
@@ -183,19 +183,19 @@ const ChatBody = ({ socket }) => {
               <div ref={lastMessageRef} />
             </Row>
           </Container>
-          <Row className='p-2'>
-            <InputGroup className='mb-3'>
+          <Row className="p-2">
+            <InputGroup className="mb-3">
               <Form.Control
-                placeholder='Your Message'
-                aria-label='Your Message'
-                aria-describedby='basic-addon2'
+                placeholder="Your Message"
+                aria-label="Your Message"
+                aria-describedby="basic-addon2"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyPress={(e) => handleOnEnter(e)}
                 disabled={currentChat === null}
               />
-              <Button id='basic-addon2' onClick={handleOnClick}>
-                <i className='fa-regular fa-paper-plane'></i>
+              <Button id="basic-addon2" onClick={handleOnClick}>
+                <i className="fa-regular fa-paper-plane"></i>
               </Button>
             </InputGroup>
           </Row>

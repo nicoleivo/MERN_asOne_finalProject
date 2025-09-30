@@ -7,7 +7,6 @@ import Message from "./Message";
 import { listFaqDetails, createFaqAnswer } from "../actions/faqActions";
 import { FAQ_CREATE_ANSWER_RESET } from "../constants/faqConstants";
 
-
 const FaqDetails = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -38,8 +37,6 @@ const FaqDetails = () => {
 
   useEffect(() => {
     if (successFaqAnswer) {
-     
-
       setComment("");
       dispatch({ type: FAQ_CREATE_ANSWER_RESET });
     }
@@ -82,7 +79,7 @@ const FaqDetails = () => {
               )}
               {/* <FaqAnswer answers={faq.answers} /> */}
               <ListGroup>
-                {faq.answers.map((answer) => (
+                {(faq.answers || []).map((answer) => (
                   <ListGroup key={answer._id}>
                     <ListGroup.Item>
                       <p>{answer.createdAt.substring(0, 10)}</p>

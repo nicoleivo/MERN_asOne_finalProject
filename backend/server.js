@@ -22,7 +22,7 @@ connectDB();
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const server = http.Server(app);
 
@@ -35,15 +35,26 @@ if (process.env.NODE_ENV === "development") {
 // needed to make json data in request body accessible (used in userController to access email and password)
 app.use(express.json());
 
+//app.use(
+//  cors({
+//    origin: [
+//      process.env.FRONTEND_URL || "http://localhost:3000",
+//      "http://luminous-mousse-76daa5.netlify.app", // Your actual Netlify URL
+//    ],
+//    credentials: true,
+// })
+//);
+
 app.use(
   cors({
-    origin: [
-      process.env.FRONTEND_URL || "http://localhost:3000",
-      "http://luminous-mousse-76daa5.netlify.app", // Your actual Netlify URL
-    ],
+    origin: true, // Allow all origins temporarily
     credentials: true,
   })
 );
+
+app.get("/test", (req, res) => {
+  res.json({ message: "Server is working!" });
+});
 
 // ADD ROUTES
 app.use("/api/products", productRoutes);
@@ -61,6 +72,10 @@ app.use("/api/search", mostSearchRoutes);
 // __dirname is not directly available with ES MODULES (import syntax), only available with common js require syntax >> add path.resolve()
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(express.static(path.join(__dirname, "../frontend/public")));
+}
 
 // In your server.js, comment out or remove this section:
 // if (process.env.NODE_ENV === 'production') {
@@ -90,10 +105,21 @@ server.listen(
   )
 );
 
+//const io = new Server(server, {
+//  pingTimeout: 6000,
+//  cors: {
+//    origin:
+//      process.env.FRONTEND_URL ||
+//      "http://localhost:3000" ||
+//      "http://luminous-mousse-76daa5.netlify.app",
+//    methods: ["GET", "POST"],
+//  },
+//});
+
 const io = new Server(server, {
   pingTimeout: 6000,
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: true, // Allow all origins
     methods: ["GET", "POST"],
   },
 });

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Container } from 'react-bootstrap';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Container } from "react-bootstrap";
 
-import UserInboxComponent from './UserInboxComponent';
+import UserInboxComponent from "./UserInboxComponent";
 
-import { getRecentChats } from '../../actions/chatActions';
+import { getRecentChats } from "../../actions/chatActions";
 
 const RecentChatList = ({ socket }) => {
   const dispatch = useDispatch();
@@ -16,10 +16,10 @@ const RecentChatList = ({ socket }) => {
   const { messages } = useSelector((state) => state.chat);
 
   useEffect(() => {
-    socket.on('message received', () => {
+    socket.on("message received", () => {
       dispatch(getRecentChats());
     });
-    socket.on('confirmation required', () => {
+    socket.on("confirmation required", () => {
       dispatch(getRecentChats());
     });
   }, [socket]);
@@ -29,9 +29,9 @@ const RecentChatList = ({ socket }) => {
   }, [messages]);
 
   return (
-    <Container className='overflow-auto'>
+    <Container className="overflow-auto">
       {recent_chat &&
-        recent_chat.map((chat, index) => (
+        (recent_chat || []).map((chat, index) => (
           <UserInboxComponent
             key={index}
             {...chat}

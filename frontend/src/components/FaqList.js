@@ -111,7 +111,7 @@ const FaqList = () => {
       ) : (
         <>
           <Card>
-            {faqs.map((faq) => (
+            {(faqs || []).map((faq) => (
               <Card key={faq._id}>
                 <Card.Header>
                   <>
@@ -130,7 +130,7 @@ const FaqList = () => {
                         <Badge>Answers</Badge>
                       </h5>
                       <>
-                        {faq.answers.map((answer) => (
+                        {(faq.answers || []).map((answer) => (
                           <Card bg="Secondary " key={answer._id}>
                             <Card.Body>
                               <Card.Header key={answer._id}>

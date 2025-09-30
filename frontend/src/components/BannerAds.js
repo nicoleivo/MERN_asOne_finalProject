@@ -1,23 +1,23 @@
-import React from 'react'
-import { Col, Row, Card, Image } from 'react-bootstrap';
+import React from "react";
+import { Col, Row, Card, Image } from "react-bootstrap";
 
 const BannerAds = () => {
   return (
     <>
-    <Row>
+      <Row>
         <Col>
           <Card className="mb-3" md={4} border="light">
-            <Image src="../../../uploads/banner-help-planet.png" />
+            <Image src="/banner-help-planet.png" />
           </Card>
         </Col>
         <Col>
           <Card className="mb-3" md={4}>
-            <Image src="../../../uploads/banner-community.png" />
+            <Image src="/banner-community.png" />
           </Card>
         </Col>
-    </Row>
+      </Row>
     </>
-  )
-}
+  );
+};
 
-export default BannerAds
+export default BannerAds;

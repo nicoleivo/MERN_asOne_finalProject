@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/config";
 import {
   MOSTSEARCH_CREATE_REQUEST,
   MOSTSEARCH_CREATE_SUCCESS,
@@ -7,17 +7,17 @@ import {
   MOSTSEARCH_LIST_SUCCESS,
   MOSTSEARCH_LIST_FAIL,
   MOSTSEARCH_CREATE_SAVE,
-} from '../constants/mostSearchConstants.js';
+} from "../constants/mostSearchConstants.js";
 
 export const createSearch =
-  (search = '') =>
+  (search = "") =>
   async (dispatch) => {
     try {
       dispatch({
         type: MOSTSEARCH_CREATE_REQUEST,
       });
 
-      const { data } = await axios.get(`/api/search/?search=${search}`);
+      const { data } = await api.get(`/api/search/?search=${search}`);
       dispatch({
         type: MOSTSEARCH_CREATE_SUCCESS,
         payload: data,
@@ -42,7 +42,7 @@ export const listSearch = () => async (dispatch) => {
   try {
     dispatch({ type: MOSTSEARCH_LIST_REQUEST });
 
-    const { data } = await axios.get(`/api/search/mostsearch`);
+    const { data } = await api.get(`/api/search/mostsearch`);
 
     dispatch({
       type: MOSTSEARCH_LIST_SUCCESS,

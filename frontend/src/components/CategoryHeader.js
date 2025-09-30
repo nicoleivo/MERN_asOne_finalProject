@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { Button, Nav } from 'react-bootstrap';
-import Message from './Message';
-import Loader from './Loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { Button, Nav } from "react-bootstrap";
+import Message from "./Message";
+import Loader from "./Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, Link } from "react-router-dom";
 
-import { listProducts } from '../actions/productActions';
+import { listProducts } from "../actions/productActions";
 
 function CategoryHeader() {
   const params = useParams();
@@ -14,7 +14,7 @@ function CategoryHeader() {
 
   useEffect(() => {
     // keyword from search functionality
-    dispatch(listProducts('', pageNumber));
+    dispatch(listProducts("", pageNumber));
   }, []);
 
   const productList = useSelector((state) => state.productList);
@@ -22,7 +22,7 @@ function CategoryHeader() {
 
   const categories = [
     ...new Set(
-      allProductsCategory.map((product) => {
+      (allProductsCategory || []).map((product) => {
         return product.category;
       })
     ),
@@ -39,21 +39,21 @@ function CategoryHeader() {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Nav className='ml-auto category-nav'>
+        <Nav className="ml-auto category-nav">
           {categories &&
-            categories.map((category, index) => (
+            (categories || []).map((category, index) => (
               <Link
                 key={index}
-                className='link-container'
+                className="link-container"
                 onClick={() => categoryHandler(category)}
                 to={`/products/category/${category}`}
               >
                 <Button
-                  variant='light'
-                  type='submit'
-                  className='btn-category-nav'
+                  variant="light"
+                  type="submit"
+                  className="btn-category-nav"
                 >
                   {category}
                 </Button>

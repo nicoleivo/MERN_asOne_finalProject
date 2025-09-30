@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/config";
 import {
   FAQ_LIST_REQUEST,
   FAQ_LIST_SUCCESS,
@@ -30,11 +30,10 @@ export const listFaqs =
       dispatch({ type: FAQ_LIST_REQUEST });
 
       // ?keyword=${keyword} for search functionality
-      const { data } = await axios.get(
+      const { data } = await api.get(
         `/api/faqs/?keyword=${keyword}&pageNumber=${pageNumber}`
-        
       );
-console.log(data)
+      console.log(data);
       dispatch({
         type: FAQ_LIST_SUCCESS,
         payload: data,
@@ -56,7 +55,7 @@ export const listFaqDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: FAQ_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/faqs/${id}`);
+    const { data } = await api.get(`/api/faqs/${id}`);
 
     dispatch({
       type: FAQ_DETAILS_SUCCESS,
@@ -91,7 +90,7 @@ export const deleteFaq = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/faqs/${id}`, config);
+    await api.delete(`/api/faqs/${id}`, config);
 
     dispatch({
       type: FAQ_DELETE_SUCCESS,
@@ -125,9 +124,9 @@ export const createFaq = () => async (dispatch, getState) => {
     //   },
     // };
 
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `/api/faqs`,
-      {}, // post request but not sending data (fix sample data)
+      {} // post request but not sending data (fix sample data)
       /*config*/
     );
 
@@ -164,9 +163,7 @@ export const updateFaq = (faq) => async (dispatch, getState) => {
     //   },
     // };
 
-    const { data } = await axios.put(
-      `/api/faqs/${faq._id}`,faq/*, config*/
-    );
+    const { data } = await api.put(`/api/faqs/${faq._id}`, faq /*, config*/);
 
     dispatch({
       type: FAQ_UPDATE_SUCCESS,
@@ -200,7 +197,7 @@ export const createFaqAnswer =
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      await axios.post(`/api/faqs/ans/${faqId}/answers`, answer , config);
+      await api.post(`/api/faqs/ans/${faqId}/answers`, answer, config);
 
       dispatch({
         type: FAQ_CREATE_ANSWER_SUCCESS,
@@ -216,8 +213,8 @@ export const createFaqAnswer =
     }
   };
 
-
-  export const deleteFaqAnswer = (faqId, answer) => async (dispatch, getState) => {
+export const deleteFaqAnswer =
+  (faqId, answer) => async (dispatch, getState) => {
     try {
       dispatch({
         type: FAQ_ANSWER_DELETE_REQUEST,
@@ -229,12 +226,12 @@ export const createFaqAnswer =
         userLogin: { userInfo },
       } = getState();
 
-        const config = {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        };
-      await axios.delete(`/api/faqs/ans/${faqId}/answers`, config);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await api.delete(`/api/faqs/ans/${faqId}/answers`, config);
 
       dispatch({
         type: FAQ_ANSWER_DELETE_SUCCESS,

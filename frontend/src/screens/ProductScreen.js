@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, ListGroup, Button, Form, Carousel } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, ListGroup, Button, Form, Carousel } from "react-bootstrap";
 
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import Rating from '../components/Rating';
-import UserDetails from '../components/UserDetails';
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import Rating from "../components/Rating";
+import UserDetails from "../components/UserDetails";
 
 import {
   addWishItem,
   getUserDetailsProductCreator,
-} from '../actions/userActions';
+} from "../actions/userActions";
 import {
   listProductDetails,
   createProductReview,
-} from '../actions/productActions';
-import { accessChat } from '../actions/chatActions';
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
+} from "../actions/productActions";
+import { accessChat } from "../actions/chatActions";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 
 const ProductScreen = () => {
   const params = useParams();
@@ -26,7 +26,7 @@ const ProductScreen = () => {
   const dispatch = useDispatch();
 
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [showMore, setShowMore] = useState(false);
 
   const productDetails = useSelector((state) => state.productDetails);
@@ -67,9 +67,9 @@ const ProductScreen = () => {
 
   useEffect(() => {
     if (successProductReview) {
-      alert('Review Submitted!');
+      alert("Review Submitted!");
       setRating(0);
-      setComment('');
+      setComment("");
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
     dispatch(listProductDetails(params.id));
@@ -89,7 +89,7 @@ const ProductScreen = () => {
   };
 
   const addToWishlist = () => {
-    console.log('Added to Wishlist');
+    console.log("Added to Wishlist");
     dispatch(addWishItem(params.id));
     if (userInfo) {
       navigate(`/wishlist`);
@@ -109,24 +109,24 @@ const ProductScreen = () => {
   };
 
   const redirectToLogin = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <>
       {loadingUserDetails && <Loader />}
       {errorUserDetails && (
-        <Message variant='danger'>{errorUserDetails}</Message>
+        <Message variant="danger">{errorUserDetails}</Message>
       )}
       {loadingUserDetailsProductCreator && <Loader />}
       {errorUserDetailsProductCreator && (
-        <Message variant='danger'>{errorUserDetailsProductCreator}</Message>
+        <Message variant="danger">{errorUserDetailsProductCreator}</Message>
       )}
 
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <Row>
@@ -136,36 +136,36 @@ const ProductScreen = () => {
                 <Carousel interval={null}>
                   <Carousel.Item>
                     <img
-                      className='d-block w-75'
+                      className="d-block w-75"
                       src={product.image}
-                      alt='First slide'
+                      alt="First slide"
                     />
                   </Carousel.Item>
                 </Carousel>
               ) : (
-                <Carousel variant='dark' interval={null}>
+                <Carousel variant="dark" interval={null}>
                   <Carousel.Item>
                     <img
-                      className='d-block w-75'
+                      className="d-block w-75"
                       src={product.image}
-                      alt='First slide'
+                      alt="First slide"
                     />
                   </Carousel.Item>
                   {product.imageSecond && (
                     <Carousel.Item>
                       <img
-                        className='d-block w-75'
+                        className="d-block w-75"
                         src={product.imageSecond}
-                        alt='Second slide'
+                        alt="Second slide"
                       />
                     </Carousel.Item>
                   )}
                   {product.imageThird && (
                     <Carousel.Item>
                       <img
-                        className='d-block w-75'
+                        className="d-block w-75"
                         src={product.imageThird}
-                        alt='Third slide'
+                        alt="Third slide"
                       />
                     </Carousel.Item>
                   )}
@@ -174,17 +174,17 @@ const ProductScreen = () => {
             </Col>
 
             {/* Product Info Box */}
-            <Col md={5} className='product-info-col'>
-              <ListGroup variant='flush'>
+            <Col md={5} className="product-info-col">
+              <ListGroup variant="flush">
                 <ListGroup.Item>
-                  <i className='fas fa-location-dot'></i>{' '}
+                  <i className="fas fa-location-dot"></i>{" "}
                   {userProductCreator.city}, {userProductCreator.district}
                 </ListGroup.Item>
 
                 <ListGroup.Item>
-                  <h4 className='h4-product-screen'>{product.name}</h4>
+                  <h4 className="h4-product-screen">{product.name}</h4>
 
-                  <div style={{ marginBottom: '0.7rem' }}>
+                  <div style={{ marginBottom: "0.7rem" }}>
                     <Rating
                       value={product.rating}
                       text={`${product.numReviews} reviews`}
@@ -197,33 +197,33 @@ const ProductScreen = () => {
                     : `${productDescription.substring(0, 230)}`}
                   {productDescription.length > 230 && (
                     <Button
-                      className='btn-light btn-custom btn-sm'
+                      className="btn-light btn-custom btn-sm"
                       style={{
-                        padding: '0 10px',
-                        marginLeft: '0.5rem',
+                        padding: "0 10px",
+                        marginLeft: "0.5rem",
                       }}
                       onClick={() => setShowMore(!showMore)}
                     >
-                      {showMore ? 'Show less' : 'Show more'}
+                      {showMore ? "Show less" : "Show more"}
                     </Button>
                   )}
 
-                  <div className='d-grid gap-2'>
+                  <div className="d-grid gap-2">
                     {!userInfo && (
                       <Button
                         onClick={redirectToLogin}
-                        className='btn-dark'
-                        style={{ marginTop: '2rem' }}
-                        type='button'
+                        className="btn-dark"
+                        style={{ marginTop: "2rem" }}
+                        type="button"
                         disabled={product.availability === false}
                       >
                         {product.availability ? (
                           <span>
-                            <i className='fas fa-check'></i> Available for rent
+                            <i className="fas fa-check"></i> Available for rent
                           </span>
                         ) : (
                           <span>
-                            <i className='fas fa-pause-circle'></i> Currently
+                            <i className="fas fa-pause-circle"></i> Currently
                             Rented
                           </span>
                         )}
@@ -234,9 +234,9 @@ const ProductScreen = () => {
                       <>
                         <Button
                           onClick={requestUserChat}
-                          className='btn-dark'
-                          style={{ marginTop: '2rem' }}
-                          type='button'
+                          className="btn-dark"
+                          style={{ marginTop: "2rem" }}
+                          type="button"
                           disabled={product.availability === false}
                         >
                           {/* {product.availability && currentChat.isRequired ? (
@@ -254,11 +254,11 @@ const ProductScreen = () => {
 
                           {product.availability ? (
                             <span>
-                              <i className='fas fa-message'></i> Request
+                              <i className="fas fa-message"></i> Request
                             </span>
                           ) : (
                             <span>
-                              <i className='fas fa-pause-circle'></i> Currently
+                              <i className="fas fa-pause-circle"></i> Currently
                               Rented
                             </span>
                           )}
@@ -266,18 +266,18 @@ const ProductScreen = () => {
 
                         <Button
                           onClick={addToWishlist}
-                          className='btn-light btn-custom'
-                          type='button'
+                          className="btn-light btn-custom"
+                          type="button"
                         >
                           <span>
-                            <i className='fas fa-heart'></i> Add to Wishlist
+                            <i className="fas fa-heart"></i> Add to Wishlist
                           </span>
                         </Button>
                       </>
                     )}
                   </div>
 
-                  <div style={{ paddingTop: '3rem' }}>
+                  <div style={{ paddingTop: "3rem" }}>
                     <UserDetails user={userProductCreator} />
                   </div>
                 </ListGroup.Item>
@@ -292,8 +292,8 @@ const ProductScreen = () => {
               {/* Message when no reviews */}
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
 
-              <ListGroup variant='flush'>
-                {product.reviews.map((review) => (
+              <ListGroup variant="flush">
+                {(product.reviews || []).map((review) => (
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
@@ -306,7 +306,7 @@ const ProductScreen = () => {
                   <h2>Write a Customer Review</h2>
 
                   {successProductReview && (
-                    <Message variant='success'>
+                    <Message variant="success">
                       Review submitted successfully
                     </Message>
                   )}
@@ -314,47 +314,47 @@ const ProductScreen = () => {
                   {loadingProductReview && <Loader />}
 
                   {errorProductReview && (
-                    <Message variant='danger'>{errorProductReview}</Message>
+                    <Message variant="danger">{errorProductReview}</Message>
                   )}
 
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
-                      <Form.Group controlId='rating'>
+                      <Form.Group controlId="rating">
                         <Form.Label>Rating</Form.Label>
                         <Form.Control
-                          as='select'
+                          as="select"
                           value={rating}
                           onChange={(e) => setRating(e.target.value)}
                         >
-                          <option value=''>Select...</option>
-                          <option value='1'>1 - Poor</option>
-                          <option value='2'>2 - Fair</option>
-                          <option value='3'>3 - Good</option>
-                          <option value='4'>4 - Very Good</option>
-                          <option value='5'>5 - Excellent</option>
+                          <option value="">Select...</option>
+                          <option value="1">1 - Poor</option>
+                          <option value="2">2 - Fair</option>
+                          <option value="3">3 - Good</option>
+                          <option value="4">4 - Very Good</option>
+                          <option value="5">5 - Excellent</option>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group controlId='comment'>
+                      <Form.Group controlId="comment">
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
-                          as='textarea'
-                          row='3'
+                          as="textarea"
+                          row="3"
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
                       <Button
                         disabled={loadingProductReview}
-                        type='submit'
-                        variant='primary'
-                        style={{ marginTop: '1rem' }}
+                        type="submit"
+                        variant="primary"
+                        style={{ marginTop: "1rem" }}
                       >
                         Submit
                       </Button>
                     </Form>
                   ) : (
                     <Message>
-                      Please <Link to='/login'>sign in</Link> to write a review{' '}
+                      Please <Link to="/login">sign in</Link> to write a review{" "}
                     </Message>
                   )}
                 </ListGroup.Item>

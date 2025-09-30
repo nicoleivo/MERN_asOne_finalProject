@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Button } from 'react-bootstrap';
-import Loader from './Loader';
-import Message from './Message';
-import { listTopCategoryName } from '../actions/productActions';
-import Product from './Product';
-import { LinkContainer } from 'react-router-bootstrap';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col, Button } from "react-bootstrap";
+import Loader from "./Loader";
+import Message from "./Message";
+import { listTopCategoryName } from "../actions/productActions";
+import Product from "./Product";
+import { LinkContainer } from "react-router-bootstrap";
 
 const TopCategoryName = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const TopCategoryName = () => {
 
   const category = [
     ...new Set(
-      products.map((product) => {
+      (products || []).map((product) => {
         return product.category;
       })
     ),
@@ -32,23 +32,21 @@ const TopCategoryName = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <h3>Top Category: Books</h3>{' '}
+          <h3>Top Category: Books</h3>{" "}
           <Row>
-            {products.map((product, index) => (
+            {(products || []).map((product, index) => (
               <Col sm={12} md={6} lg={4} xl={3} key={index}>
                 <Product product={product} />
               </Col>
             ))}
             <Row>
-              <Col className="d-flex justify-content-end mb-5" >
+              <Col className="d-flex justify-content-end mb-5">
                 <LinkContainer to={`/products/category/${category}`}>
-                  <Button 
-                    className="btn-custom-cta"
-                    size='sm'
-                  >Show All {category}
+                  <Button className="btn-custom-cta" size="sm">
+                    Show All {category}
                   </Button>
                 </LinkContainer>
               </Col>

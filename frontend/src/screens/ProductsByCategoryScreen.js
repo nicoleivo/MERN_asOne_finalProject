@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Col, Row } from 'react-bootstrap';
-import Product from '../components/Product';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import Paginate from '../components/Paginate';
-import { listProducts } from '../actions/productActions';
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap";
+import Product from "../components/Product";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
+import Paginate from "../components/Paginate";
+import { listProducts } from "../actions/productActions";
 
 const ProductsByCategory = () => {
   const params = useParams();
@@ -31,14 +31,14 @@ const ProductsByCategory = () => {
           <Loader />
         ) : // if error true display error message in HomeScreen component
         error ? (
-          <Message variant='danger'>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
           <>
             <Row>
               {products.length > 0 ? (
                 <>
                   <h1>{keyword}</h1>
-                  {products.map((product) => (
+                  {(products || []).map((product) => (
                     <Col sm={12} md={6} lg={4} xl={3}>
                       {/* <h5 key={product._id}>
                         just for testing: {product.category}
@@ -59,7 +59,7 @@ const ProductsByCategory = () => {
                 /*  pass props in from state */
                 pages={pages}
                 page={page}
-                keyword={keyword ? keyword : ''}
+                keyword={keyword ? keyword : ""}
               />
             }
           </>

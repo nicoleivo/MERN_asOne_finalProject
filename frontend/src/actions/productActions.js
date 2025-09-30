@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/config";
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -27,16 +27,16 @@ import {
   PRODUCT_TOP_CATEGORYNAME_REQUEST,
   PRODUCT_TOP_CATEGORYNAME_SUCCESS,
   PRODUCT_TOP_CATEGORYNAME_FAIL,
-} from '../constants/productConstants';
+} from "../constants/productConstants";
 
 export const listProducts =
-  (keyword = '', pageNumber = '') =>
+  (keyword = "", pageNumber = "") =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       // ?keyword=${keyword} for search functionality
-      const { data } = await axios.get(
+      const { data } = await api.get(
         `/api/products/?keyword=${keyword}&pageNumber=${pageNumber}`
       );
 
@@ -61,7 +61,7 @@ export const listProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/products/${id}`);
+    const { data } = await api.get(`/api/products/${id}`);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -82,7 +82,7 @@ export const listProductDetailsByUserId = (userId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_BY_USER_REQUEST });
 
-    const { data } = await axios.get(`/api/products/user/${userId}`);
+    const { data } = await api.get(`/api/products/user/${userId}`);
 
     dispatch({
       type: PRODUCT_DETAILS_BY_USER_SUCCESS,
@@ -116,7 +116,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/products/${id}`, config);
+    await api.delete(`/api/products/${id}`, config);
 
     dispatch({
       type: PRODUCT_DELETE_SUCCESS,
@@ -149,7 +149,7 @@ export const createProduct = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `/api/products`,
       {}, // post request but not sending data (fix sample data)
       config
@@ -182,12 +182,12 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put(
+    const { data } = await api.put(
       `/api/products/${product._id}`,
       product,
       config
@@ -221,12 +221,12 @@ export const createProductReview =
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      await axios.post(`/api/products/${productId}/reviews`, review, config);
+      await api.post(`/api/products/${productId}/reviews`, review, config);
 
       dispatch({
         type: PRODUCT_CREATE_REVIEW_SUCCESS,
@@ -253,7 +253,7 @@ export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
 
-    const { data } = await axios.get(`/api/products/top`);
+    const { data } = await api.get(`/api/products/top`);
 
     dispatch({
       type: PRODUCT_TOP_SUCCESS,
@@ -274,7 +274,7 @@ export const listTopCategoryName = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_CATEGORYNAME_REQUEST });
 
-    const { data } = await axios.get(`/api/products/topCategory`);
+    const { data } = await api.get(`/api/products/topCategory`);
 
     dispatch({
       type: PRODUCT_TOP_CATEGORYNAME_SUCCESS,

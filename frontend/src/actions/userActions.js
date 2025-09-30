@@ -1,5 +1,5 @@
-import axios from 'axios';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import api from "../api/config";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -43,7 +43,7 @@ import {
   USER_DELETE_RENTED_REQUEST,
   USER_DELETE_RENTED_SUCCESS,
   USER_DELETE_RENTED_FAIL,
-} from '../constants/userConstants';
+} from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -55,12 +55,12 @@ export const login = (email, password) => async (dispatch) => {
     // send token for protected routes
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
-    const { data } = await axios.post(
-      '/api/users/login',
+    const { data } = await api.post(
+      "/api/users/login",
       { email, password },
       config
     );
@@ -70,7 +70,7 @@ export const login = (email, password) => async (dispatch) => {
       payload: data,
     });
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    localStorage.setItem("userInfo", JSON.stringify(data));
 
     // socket.emit('setup', data);
     // socket.on('connected', () => {
@@ -88,8 +88,8 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem('userInfo');
-  storage.removeItem('persist:root');
+  localStorage.removeItem("userInfo");
+  storage.removeItem("persist:root");
 
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: SIGNOUT_REQUEST });
@@ -97,7 +97,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LIST_RESET }); // obsolete?
 
-  document.location.href = '/login';
+  document.location.href = "/login";
 };
 
 export const register =
@@ -109,12 +109,12 @@ export const register =
 
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
 
-      const { data } = await axios.post(
-        '/api/users',
+      const { data } = await api.post(
+        "/api/users",
         { name, email, password, city, district },
         config
       );
@@ -130,7 +130,7 @@ export const register =
         payload: data,
       });
 
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
     } catch (error) {
       dispatch({
         type: USER_REGISTER_FAIL,
@@ -157,12 +157,12 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.get(`/api/users/${id}`, config);
+    const { data } = await api.get(`/api/users/${id}`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -192,12 +192,12 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put('/api/users/profile', user, config);
+    const { data } = await api.put("/api/users/profile", user, config);
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
@@ -209,7 +209,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
@@ -238,7 +238,7 @@ export const listUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get('/api/users', config);
+    const { data } = await api.get("/api/users", config);
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -272,7 +272,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/users/${id}`, config);
+    await api.delete(`/api/users/${id}`, config);
 
     dispatch({
       type: USER_DELETE_SUCCESS,
@@ -301,12 +301,12 @@ export const updateUser = (user) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+    const { data } = await api.put(`/api/users/${user._id}`, user, config);
 
     dispatch({
       type: USER_UPDATE_SUCCESS,
@@ -348,7 +348,7 @@ export const getUserDetailsProductCreator =
       //   },
       // };
 
-      const { data } = await axios.get(`/api/users/product-creator/${userId}`);
+      const { data } = await api.get(`/api/users/product-creator/${userId}`);
 
       dispatch({
         type: USER_DETAILS_PRODUCT_CREATOR_SUCCESS,
@@ -382,12 +382,12 @@ export const addWishItem = (productId) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.get(`/api/users/mywish/${productId}`, config);
+    const { data } = await api.get(`/api/users/mywish/${productId}`, config);
     //console.log("wishlistData", data);
 
     dispatch({
@@ -426,7 +426,7 @@ export const getUserWishList = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`api/users/all/mywish`, config);
+    const { data } = await api.get(`api/users/all/mywish`, config);
     //console.log("data from getUserWish ", data);
     dispatch({
       type: USER_WISHLIST_SUCCESS,
@@ -461,12 +461,12 @@ export const deleteWishItem = (productId) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    await axios.delete(`/api/users/mywish/${productId}`, config);
+    await api.delete(`/api/users/mywish/${productId}`, config);
 
     dispatch({
       USER_DELETE_WISHITEM_SUCCESS,
@@ -495,12 +495,12 @@ export const deleteRentedItem = (productId) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    await axios.delete(`/api/users/myrented/${productId}`, config);
+    await api.delete(`/api/users/myrented/${productId}`, config);
 
     dispatch({
       USER_DELETE_RENTED_SUCCESS,

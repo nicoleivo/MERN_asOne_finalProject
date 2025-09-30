@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { Col, Row, Card, Image } from 'react-bootstrap';
+import React, { useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Col, Row, Card, Image } from "react-bootstrap";
 
-import { listProducts } from '../actions/productActions';
+import { listProducts } from "../actions/productActions";
 
-import TopProducts from '../components/TopProducts';
-import MostSearched from '../components/MostSearched';
-import TopCategoryName from '../components/TopCategoryName';
-import BannerAds from '../components/BannerAds';
+import TopProducts from "../components/TopProducts";
+import MostSearched from "../components/MostSearched";
+import TopCategoryName from "../components/TopCategoryName";
+import BannerAds from "../components/BannerAds";
 
 const HomeScreen = () => {
   const params = useParams();
@@ -29,15 +29,9 @@ const HomeScreen = () => {
           {/* Hero Banner */}
           <Row>
             <Col>
-              <Card className='mb-3 hero-banner' md={4} border='light'>
-                <Image
-                  src='../../../uploads/banner-hero.png'
-                  className='hero-banner-md'
-                />
-                <Image
-                  src='../../../uploads/banner-hero-xs.png'
-                  className='hero-banner-xs'
-                />
+              <Card className="mb-3 hero-banner" md={4} border="light">
+                <Image src="/banner-hero.png" className="hero-banner-md" />
+                <Image src="/banner-hero.png" className="hero-banner-xs" />
               </Card>
             </Col>
           </Row>
@@ -47,7 +41,7 @@ const HomeScreen = () => {
           <TopCategoryName />
         </>
       ) : (
-        <Link to='/' className='btn btn-light'>
+        <Link to="/" className="btn btn-light">
           Go Back
         </Link>
       )}

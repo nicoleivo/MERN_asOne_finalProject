@@ -1,17 +1,17 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Row, Col, Container } from 'react-bootstrap';
-import { io } from 'socket.io-client';
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Row, Col, Container } from "react-bootstrap";
+import { io } from "socket.io-client";
 
-import ChatBody from '../components/chatComponents/ChatBody';
-import RecentChatList from '../components/chatComponents/RecentChatList';
+import ChatBody from "../components/chatComponents/ChatBody";
+import RecentChatList from "../components/chatComponents/RecentChatList";
 
-import { getRecentChats, fetchCurrentMessages } from '../actions/chatActions';
+import { getRecentChats, fetchCurrentMessages } from "../actions/chatActions";
 
 // import { addUnseenMsg } from '../actions/notificationActions';
 
-const SERVER = `http://localhost:3000`;
+const SERVER = process.env.REACT_APP_SOCKET_URL || "http://localhost:5001";
 const socket = io(SERVER);
 
 const ChatScreen = () => {
@@ -28,11 +28,11 @@ const ChatScreen = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      return navigate('/login');
+      return navigate("/login");
     }
 
-    socket.emit('setup', userInfo);
-    socket.on('connected', () => {
+    socket.emit("setup", userInfo);
+    socket.on("connected", () => {
       console.log(`My Socket Id is: ${socket.id}`);
     });
 
@@ -48,20 +48,20 @@ const ChatScreen = () => {
   }, []);
 
   return (
-    <Container className='chat-container' fluid='md'>
-      <Row className='chat-mainRow1 border'>
-        <Col sm={4} className='chat-inbox-container'>
+    <Container className="chat-container" fluid="md">
+      <Row className="chat-mainRow1 border">
+        <Col sm={4} className="chat-inbox-container">
           <h4>Inbox</h4>
         </Col>
-        <Col sm={8} className='chat-name-container'>
+        <Col sm={8} className="chat-name-container">
           <h4>{currentUser && currentUser.name}</h4>
         </Col>
       </Row>
-      <Row className='chat-mainRow2 border'>
-        <Col sm={4} className='myChats-container'>
+      <Row className="chat-mainRow2 border">
+        <Col sm={4} className="myChats-container">
           <RecentChatList socket={socket} />
         </Col>
-        <Col sm={8} className='chat-body-container'>
+        <Col sm={8} className="chat-body-container">
           <ChatBody socket={socket} />
         </Col>
       </Row>

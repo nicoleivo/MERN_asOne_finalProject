@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/config";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
@@ -67,7 +67,7 @@ const ProductEditScreen = () => {
         },
       };
 
-      const { data } = await axios.post("/api/upload", formData, config);
+      const { data } = await api.post("/api/upload", formData, config);
 
       setImage(data); // data is image path
       setUploading(false);
@@ -90,7 +90,7 @@ const ProductEditScreen = () => {
         },
       };
 
-      const { data } = await axios.post("/api/upload", formData, config);
+      const { data } = await api.post("/api/upload", formData, config);
 
       setImageSecond(data); // data is image path
       setUploading(false);
@@ -113,7 +113,7 @@ const ProductEditScreen = () => {
         },
       };
 
-      const { data } = await axios.post("/api/upload", formData, config);
+      const { data } = await api.post("/api/upload", formData, config);
 
       setImageThird(data); // data is image path
 
@@ -141,112 +141,110 @@ const ProductEditScreen = () => {
   };
 
   return (
-  
-      <FormContainer>
-        <h1>Edit Product</h1> 
+    <FormContainer>
+      <h1>Edit Product</h1>
 
-        {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+      {loadingUpdate && <Loader />}
+      {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
 
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId="name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="name"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-            <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
+          <Form.Group controlId="image">
+            <Form.Label>Image</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter image url"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+            ></Form.Control>
 
-              <Form.Control
-                type="file"
-                // id='image-file'
-                label="Choose File"
-                custom
-                onChange={uploadImageHandler}
-              ></Form.Control>
-              {uploading && <Loader />}
-            </Form.Group>
-            <Form.Group controlId="imageSecond">
-              <Form.Label>Image Second</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={imageSecond}
-                onChange={(e) => setImageSecond(e.target.value)}
-              ></Form.Control>
+            <Form.Control
+              type="file"
+              // id='image-file'
+              label="Choose File"
+              custom
+              onChange={uploadImageHandler}
+            ></Form.Control>
+            {uploading && <Loader />}
+          </Form.Group>
+          <Form.Group controlId="imageSecond">
+            <Form.Label>Image Second</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter image url"
+              value={imageSecond}
+              onChange={(e) => setImageSecond(e.target.value)}
+            ></Form.Control>
 
-              <Form.Control
-                type="file"
-                // id='image-file'
-                label="Choose File"
-                custom
-                onChange={uploadImageSecondHandler}
-              ></Form.Control>
-              {uploading && <Loader />}
-            </Form.Group>
+            <Form.Control
+              type="file"
+              // id='image-file'
+              label="Choose File"
+              custom
+              onChange={uploadImageSecondHandler}
+            ></Form.Control>
+            {uploading && <Loader />}
+          </Form.Group>
 
-            <Form.Group controlId="imageThird">
-              <Form.Label>image Third</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={imageThird}
-                onChange={(e) => setImageThird(e.target.value)}
-              ></Form.Control>
+          <Form.Group controlId="imageThird">
+            <Form.Label>image Third</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter image url"
+              value={imageThird}
+              onChange={(e) => setImageThird(e.target.value)}
+            ></Form.Control>
 
-              <Form.Control
-                type="file"
-                // id='image-file'
-                label="Choose File"
-                custom
-                onChange={uploadImageThirdHandler}
-              ></Form.Control>
-              {uploading && <Loader />}
-            </Form.Group>
+            <Form.Control
+              type="file"
+              // id='image-file'
+              label="Choose File"
+              custom
+              onChange={uploadImageThirdHandler}
+            ></Form.Control>
+            {uploading && <Loader />}
+          </Form.Group>
 
-              <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <Form.Group controlId="category">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-            <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <Form.Group controlId="description">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-            <Button type="submit" className="btn-custom-submit">
-              Update
-            </Button>
-          </Form>
-        )}
-      </FormContainer>
- 
+          <Button type="submit" className="btn-custom-submit">
+            Update
+          </Button>
+        </Form>
+      )}
+    </FormContainer>
   );
 };
 

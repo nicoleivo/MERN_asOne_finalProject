@@ -6,37 +6,35 @@ import { listFaqs } from "../actions/faqActions";
 
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import BannerAds from '../components/BannerAds';
+import BannerAds from "../components/BannerAds";
 import Faq from "../components/Faq";
 import Paginate from "../components/Paginate";
 import FaqAskButton from "../components/FaqAskButton";
-import FaqSearchBox from '../components/FaqSearchBox'
+import FaqSearchBox from "../components/FaqSearchBox";
 
 const FaqScreen = () => {
- const params = useParams();
- const keyword = params.keyword;
- const pageNumber = params.pageNumber || 1;
+  const params = useParams();
+  const keyword = params.keyword;
+  const pageNumber = params.pageNumber || 1;
 
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
- const faqList = useSelector((state) => state.faqList);
+  const faqList = useSelector((state) => state.faqList);
   const { loading, error, faqs, page, pages } = faqList;
-  
-   const userLogin = useSelector((state) => state.userLogin);
+
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  
- useEffect(() => {
-   // keyword from search functionality
-   dispatch(listFaqs(keyword, pageNumber));
- }, [dispatch, keyword, pageNumber]);
-    
+
+  useEffect(() => {
+    // keyword from search functionality
+    dispatch(listFaqs(keyword, pageNumber));
+  }, [dispatch, keyword, pageNumber]);
 
   return (
     <>
-      
       <h1>FAQ/Help</h1>
 
-      <div style={{width: "50vw"}}>
+      <div style={{ width: "50vw" }}>
         <FaqSearchBox />
       </div>
 
@@ -57,8 +55,8 @@ const FaqScreen = () => {
         ) : (
           // if loading false and no error show faq
           <>
-            <Row style={{marginBottom: "3rem"}}>
-              {faqs.map((faq) => (
+            <Row style={{ marginBottom: "3rem" }}>
+              {(faqs || []).map((faq) => (
                 <Col key={faq._id} sm={12} md={6} lg={4} xl={3}>
                   {/* pass faqs as props to faq component */}
                   <Faq faq={faq} />

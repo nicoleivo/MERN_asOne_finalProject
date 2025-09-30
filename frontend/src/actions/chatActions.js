@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "../api/config";
 import {
   SELECT_CHAT,
   FETCH_MESSAGES_REQUEST,
@@ -19,7 +19,7 @@ import {
   UPDATE_CHAT_SUCCESS,
   UPDATE_CHAT_FAIL,
   UPDATE_CHAT_REQUEST,
-} from '../constants/chatConstants.js';
+} from "../constants/chatConstants.js";
 
 //fetches selected messages and joins chat on socket.io
 export const fetchCurrentMessages =
@@ -33,14 +33,14 @@ export const fetchCurrentMessages =
 
       const config = {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      const { data } = await axios.get(`/api/message/${chatId}`, config);
+      const { data } = await api.get(`/api/message/${chatId}`, config);
 
-      socket.emit('join chat', chatId);
+      socket.emit("join chat", chatId);
 
       dispatch({ type: FETCH_MESSAGES_SUCCESS, payload: data });
     } catch (error) {
@@ -65,18 +65,18 @@ export const sendMessage =
 
       const config = {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      const { data } = await axios.post(
+      const { data } = await api.post(
         `/api/message/${currentChat}`,
         { msg: msg },
         config
       );
 
-      socket.emit('new message', data);
+      socket.emit("new message", data);
 
       dispatch({
         type: SEND_MESSAGE_SUCCESS,
@@ -103,12 +103,12 @@ export const getRecentChats = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.get(`/api/chat`, config);
+    const { data } = await api.get(`/api/chat`, config);
 
     dispatch({
       type: RECENT_CHAT_SUCCESS,
@@ -140,12 +140,12 @@ export const accessChat =
 
       const config = {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
-      const { data } = await axios.post(
+      const { data } = await api.post(
         `/api/chat`,
         { selectedUserId, currentUserId, product },
         config
@@ -190,12 +190,12 @@ export const updateMessages = (chatId) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.get(`/api/message/${chatId}`, config);
+    const { data } = await api.get(`/api/message/${chatId}`, config);
 
     dispatch({ type: UPDATE_MESSAGES_SUCCESS, payload: data });
   } catch (error) {
@@ -238,12 +238,12 @@ export const updateChat = (chat) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'content-type': 'application/json',
+        "content-type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
-    const { data } = await axios.put(`/api/chat`, chat, config);
+    const { data } = await api.put(`/api/chat`, chat, config);
 
     dispatch({ type: UPDATE_CHAT_SUCCESS, payload: data });
   } catch (error) {

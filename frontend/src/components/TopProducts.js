@@ -10,7 +10,7 @@ const TopProducts = () => {
   const dispatch = useDispatch();
 
   const productTopRated = useSelector((state) => state.productTopRated);
-  const { loading, error, products } = productTopRated
+  const { loading, error, products } = productTopRated;
 
   useEffect(() => {
     dispatch(listTopProducts());
@@ -26,7 +26,7 @@ const TopProducts = () => {
         <>
           <h3>Top Products</h3>{" "}
           <Row>
-            {products.map((product) => (
+            {(products || []).map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
