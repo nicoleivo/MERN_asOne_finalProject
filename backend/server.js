@@ -39,7 +39,7 @@ app.use(express.json());
 //  cors({
 //    origin: [
 //      process.env.FRONTEND_URL || "http://localhost:3000",
-//      "http://luminous-mousse-76daa5.netlify.app", // Your actual Netlify URL
+//      "asone.netlify.app", // Your actual Netlify URL
 //    ],
 //    credentials: true,
 // })
@@ -111,7 +111,7 @@ server.listen(
 //    origin:
 //      process.env.FRONTEND_URL ||
 //      "http://localhost:3000" ||
-//      "http://luminous-mousse-76daa5.netlify.app",
+//      "asone.netlify.app",
 //    methods: ["GET", "POST"],
 //  },
 //});
