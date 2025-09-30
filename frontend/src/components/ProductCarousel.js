@@ -27,7 +27,7 @@ const ProductCarousel = () => {
           <Link to={`/product/${product._id}`}>
             <Image
               src={`${process.env.REACT_APP_API_URL}${product.image}`}
-              alt={`${process.env.REACT_APP_API_URL}${product.name}`}
+              alt={product.name}
               fluid
             />
             <Carousel.Caption className="carousel-caption">

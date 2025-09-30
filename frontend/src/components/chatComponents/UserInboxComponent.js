@@ -75,7 +75,7 @@ const UserInboxComponent = ({ selectedUser, socket, ...chat }) => {
                     </p>
                   </Row>
                   <Row>
-                    <p className="userChat-product">{`${process.env.REACT_APP_API_URL}${chat.product.category}`}</p>
+                    <p className="userChat-product">{chat.product.category}</p>
                   </Row>
                 </Col>
               </Row>
