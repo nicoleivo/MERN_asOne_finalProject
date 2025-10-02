@@ -38,6 +38,10 @@ const ChatScreen = () => {
       console.log(`My Socket Id is: ${socket.id}`);
     });
 
+    // Add socket event listeners
+    socket.on("message received", handleMessageReceived);
+    socket.on("confirmation required", handleConfirmationRequired);
+
     if (!recent_chat) {
       dispatch(getRecentChats());
     }
@@ -47,7 +51,24 @@ const ChatScreen = () => {
     } else if (recent_chat.length > 0) {
       dispatch(fetchCurrentMessages(recent_chat[0]._id, socket));
     }
+
+    // CLEANUP FUNCTION - CRITICAL
+    return () => {
+      socket.off("connected");
+      socket.off("message received", handleMessageReceived);
+      socket.off("confirmation required", handleConfirmationRequired);
+      socket.disconnect();
+    };
   }, []);
+
+  // Add handler functions
+  const handleMessageReceived = (receivedMessage) => {
+    // Your message handling logic
+  };
+
+  const handleConfirmationRequired = (renterInfo) => {
+    // Your confirmation handling logic
+  };
 
   return (
     <Container className="chat-container" fluid="md">

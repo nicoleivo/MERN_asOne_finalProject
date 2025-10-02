@@ -37,8 +37,7 @@ const getProducts = asyncHandler(async (req, res) => {
   const allProductsCategory = await Product.find({});
 
   // get total count of products for pagination functionality
-  const count = await Product.count();
-  let totalCount = products.length + 1;
+  const totalCount = await Product.countDocuments(find);
   // console.log(totalCount);
   // console.log(Math.ceil(totalCount / pageSize));
 

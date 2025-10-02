@@ -69,7 +69,7 @@ const ProfileScreen = () => {
       formData.append("upload_preset", "asone_uploads"); // Your preset name
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/dcgob4tzf/image/upload`,
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
           method: "POST",
           body: formData,

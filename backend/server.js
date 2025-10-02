@@ -35,20 +35,15 @@ if (process.env.NODE_ENV === "development") {
 // needed to make json data in request body accessible (used in userController to access email and password)
 app.use(express.json());
 
-//app.use(
-//  cors({
-//    origin: [
-//      process.env.FRONTEND_URL || "http://localhost:3000",
-//      "asone.netlify.app", // Your actual Netlify URL
-//    ],
-//    credentials: true,
-// })
-//);
-
 app.use(
   cors({
-    origin: true, // Allow all origins temporarily
+    origin:
+      process.env.NODE_ENV === "production"
+        ? ["https://asone.netlify.app", "https://www.asone.netlify.app"]
+        : ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
 
@@ -73,21 +68,20 @@ app.use("/api/search", mostSearchRoutes);
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-if (process.env.NODE_ENV === "development") {
-  app.use(express.static(path.join(__dirname, "../frontend/public")));
-}
+//if (process.env.NODE_ENV === "development") {
+//  app.use(express.static(path.join(__dirname, "../frontend/public")));
+//}
 
-// In your server.js, comment out or remove this section:
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '/frontend/build')))
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//   )
-// } else {
-//   app.get('/', (req, res) => {
-//     res.send('API is running....')
-//   })
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running....");
+  });
+}
 
 // Simple route for root
 app.get("/", (req, res) => {
@@ -119,14 +113,28 @@ server.listen(
 const io = new Server(server, {
   pingTimeout: 6000,
   cors: {
-    origin: true, // Allow all origins
+    origin:
+      process.env.NODE_ENV === "production"
+        ? ["https://asone.netlify.app", "https://www.asone.netlify.app"]
+        : ["http://localhost:3000", "http://localhost:3001"],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
+//const io = new Server(server, {
+//  pingTimeout: 6000,
+//  cors: {
+//    origin: true, // Allow all origins
+//    methods: ["GET", "POST"],
+//  },
+//});
+
 io.on("connection", (socket) => {
   console.log(`${socket.id} is connected`);
+
   socket.on("setup", (userData) => {
+    socket.userData = userData; // Store userData in the socket object
     socket.join(userData._id);
     socket.emit("connected");
   });
@@ -162,8 +170,11 @@ io.on("connection", (socket) => {
   //   socket.to(data.room).emit('typingResponse', data);
   // });
 
-  socket.off("setup", () => {
-    socket.leave(userData._id);
+  socket.on("disconnect", () => {
+    console.log("USER DISCONNECTED");
+    if (socket.userData) {
+      socket.leave(socket.userData._id);
+    }
   });
   // after check jwt
   //

@@ -43,7 +43,7 @@ import {
   USER_DELETE_RENTED_REQUEST,
   USER_DELETE_RENTED_SUCCESS,
   USER_DELETE_RENTED_FAIL,
-} from '../constants/userConstants';
+} from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -201,8 +201,8 @@ export const userDetailsProductCreatorReducer = (
 export const userAddWishItemReducer = (state = { wishItems: [] }, action) => {
   switch (action.type) {
     case USER_ADD_WISHITEM_REQUEST:
-        return { ...state, loading: true };
-        case USER_ADD_WISHITEM_SUCCESS:
+      return { ...state, loading: true };
+    case USER_ADD_WISHITEM_SUCCESS:
       return { loading: false, wishItems: action.payload };
     case USER_ADD_WISHITEM_FAIL:
       return { loading: false, error: action.payload };
@@ -251,6 +251,30 @@ export const userDeleteWishItemReducer = (
       return state;
   }
 };
+
+// FIX suggested by AI userDeleteWishItemReducer:
+//export const userDeleteWishItemReducer = (state = { wishItems: [] }, action) => {
+//  switch (action.type) {
+//    case USER_DELETE_WISHITEM_REQUEST:
+//      return { ...state, loading: true };
+//    case USER_DELETE_WISHITEM_SUCCESS:
+//      return {
+//        ...state,
+//        loading: false,
+//        success: true,
+//        wishItems: state.wishItems.filter(item => item._id !== action.payload)
+//      };
+//    case USER_DELETE_WISHITEM_FAIL:
+//      return { ...state, loading: false, error: action.payload };
+//    default:
+//      return state;
+//  }
+//};
+// Also fix the action to include payload:
+// In userActions.js, change:
+//dispatch({ USER_DELETE_WISHITEM_SUCCESS });
+// TO:
+//dispatch({ type: USER_DELETE_WISHITEM_SUCCESS, payload: productId });
 
 export const userDeleteRentedItemReducer = (
   state = { rentedItems: [] },

@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import path from "path";
 import cloudinary from "cloudinary";
 import { v2 as cloudinaryV2 } from "cloudinary";
 
@@ -17,14 +18,14 @@ const storage = multer.memoryStorage();
 
 // Restrict file types
 function checkFileType(file, callback) {
-  const filetypes = /jpg|jpeg|png/;
+  const filetypes = /jpeg|jpg|png|webp/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 
   if (extname && mimetype) {
     return callback(null, true);
   } else {
-    callback("Images with jpg, jpeg or png file extension only!");
+    callback("Images with jpg, jpeg, webp or png file extension only!");
   }
 }
 
