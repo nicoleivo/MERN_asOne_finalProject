@@ -117,7 +117,7 @@ const ChatBody = ({ socket }) => {
     setConfirmRequired(false);
   };
 
-  //Submit message handlers
+  //Submit message handlers.
   const handleOnEnter = (e) => {
     if (e.key === "Enter") {
       dispatch(sendMessage(text, socket, currentChat._id));
