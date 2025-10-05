@@ -55,18 +55,29 @@ const ChatBody = ({ socket }) => {
   const renterInfoRef = useRef();
 
   useEffect(() => {
-    socket.on("message received", (receivedMessage) => {
-      let chatId = currentChat._id || receivedMessage.chat._id;
+    if (!socket) return;
+
+    const handleMessageReceived = (receivedMessage) => {
+      let chatId = currentChat?._id || receivedMessage.chat._id; // Added safe navigation
       dispatch(updateMessages(chatId));
       dispatch(getRecentChats());
-    });
+    };
 
-    socket.on("confirmation required", (renterInfo) => {
+    const handleConfirmationRequired = (renterInfo) => {
       renterInfoRef.current = renterInfo;
       setRenterInfo(renterInfo);
       setConfirmRequired(true);
-    });
-  }, [socket]);
+    };
+
+    socket.on("message received", handleMessageReceived);
+    socket.on("confirmation required", handleConfirmationRequired);
+
+    //CLEANUP:
+    return () => {
+      socket.off("message received", handleMessageReceived);
+      socket.off("confirmation required", handleConfirmationRequired);
+    };
+  }, [socket, currentChat, dispatch]); // Added currentChat and dispatch dependencies
 
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change

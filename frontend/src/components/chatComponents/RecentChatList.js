@@ -16,13 +16,25 @@ const RecentChatList = ({ socket }) => {
   const { messages } = useSelector((state) => state.chat);
 
   useEffect(() => {
-    socket.on("message received", () => {
+    if (!socket) return;
+
+    const handleMessageReceived = () => {
       dispatch(getRecentChats());
-    });
-    socket.on("confirmation required", () => {
+    };
+
+    const handleConfirmationRequired = () => {
       dispatch(getRecentChats());
-    });
-  }, [socket]);
+    };
+
+    socket.on("message received", handleMessageReceived);
+    socket.on("confirmation required", handleConfirmationRequired);
+
+    // Cleanup
+    return () => {
+      socket.off("message received", handleMessageReceived);
+      socket.off("confirmation required", handleConfirmationRequired);
+    };
+  }, [socket, dispatch]);
 
   useEffect(() => {
     dispatch(getRecentChats());
